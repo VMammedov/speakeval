@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/SPEAK_EVAL_DB
+    username: speakeval
+    password: 3Pd7jt2Tk
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        proc:
+          param_null_passing: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    show-sql: false

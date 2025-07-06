@@ -1,0 +1,15 @@
+spring:
+  profiles:
+    include:
+      - db
+      - security
+#server:
+#  servlet:
+#    context-path: "/api"
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+        web: DEBUG
