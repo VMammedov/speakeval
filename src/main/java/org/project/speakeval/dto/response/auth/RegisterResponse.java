@@ -10,16 +10,13 @@ import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import org.project.speakeval.enums.Role;
 
-import java.util.UUID;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RegisterResponse {
-
-    private UUID id;
+    private String id;
     private String name;
     private String lastName;
     private String email;

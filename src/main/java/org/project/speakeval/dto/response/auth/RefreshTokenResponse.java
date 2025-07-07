@@ -1,4 +1,4 @@
-package org.project.speakeval.dto.response;
+package org.project.speakeval.dto.response.auth;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -12,6 +12,6 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RefreshResponse {
+public class RefreshTokenResponse {
     String accessToken;
 }
