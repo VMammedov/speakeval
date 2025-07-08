@@ -1,4 +1,4 @@
-package org.project.speakeval.dto.request;
+package org.project.speakeval.dto.request.auth;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;

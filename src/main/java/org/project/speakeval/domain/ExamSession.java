@@ -22,7 +22,6 @@ import org.project.speakeval.enums.SessionStatus;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -34,7 +33,7 @@ import java.util.UUID;
 public class ExamSession {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private String id;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id")
@@ -57,6 +56,7 @@ public class ExamSession {
 
     private Integer totalScore;
 
+    @Builder.Default
     @OneToMany(mappedBy = "examSession", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SessionQuestion> sessionQuestions = new ArrayList<>();
 }

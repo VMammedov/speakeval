@@ -21,7 +21,6 @@ import org.project.speakeval.enums.QuestionType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -31,9 +30,10 @@ import java.util.UUID;
 @AllArgsConstructor
 @Table(name = "questions")
 public class Question {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private String id;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "exam_id")
@@ -43,13 +43,19 @@ public class Question {
     @Column(nullable = false)
     private QuestionType type;
 
+    @Column(nullable = false)
+    private Integer thinkDurationSeconds;
+
+    @Column(nullable = false)
+    private Integer answerDurationSeconds;
+
     @Column(columnDefinition = "TEXT")
     private String promptText;
 
     private String promptResourceUrl;
 
-    private Integer timeLimitSeconds;
-
+    @Builder.Default
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<QuestionOption> options = new ArrayList<>();
+    private List<QuestionOption> options = new ArrayList<>(); // Not for now, it will be used select based (A,B,C,D) exams
+
 }

@@ -1,12 +1,12 @@
 package org.project.speakeval.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.project.speakeval.domain.User;
-import org.project.speakeval.dto.request.AuthRequest;
-import org.project.speakeval.dto.request.RegisterRequest;
-import org.project.speakeval.dto.request.TokenRefreshRequest;
-import org.project.speakeval.dto.response.AuthResponse;
-import org.project.speakeval.dto.response.RefreshResponse;
+import org.project.speakeval.dto.request.auth.AuthRequest;
+import org.project.speakeval.dto.request.auth.RegisterRequest;
+import org.project.speakeval.dto.request.auth.TokenRefreshRequest;
+import org.project.speakeval.dto.response.auth.AuthResponse;
+import org.project.speakeval.dto.response.auth.RefreshTokenResponse;
+import org.project.speakeval.dto.response.auth.RegisterResponse;
 import org.project.speakeval.services.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +22,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/user/register")
-    public ResponseEntity<User> registerUser(@RequestBody RegisterRequest request) {
+    public ResponseEntity<RegisterResponse> registerUser(@RequestBody RegisterRequest request) {
         return ResponseEntity.ok(authService.registerUser(request));
     }
 
@@ -37,7 +37,7 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<RefreshResponse> refresh(@RequestBody TokenRefreshRequest request) {
+    public ResponseEntity<RefreshTokenResponse> refresh(@RequestBody TokenRefreshRequest request) {
         return ResponseEntity.ok(authService.refreshToken(request));
     }
 }

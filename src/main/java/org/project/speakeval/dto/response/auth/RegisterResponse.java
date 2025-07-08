@@ -1,4 +1,4 @@
-package org.project.speakeval.dto.response;
+package org.project.speakeval.dto.response.auth;
 
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
