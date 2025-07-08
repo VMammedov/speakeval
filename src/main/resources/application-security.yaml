@@ -1,4 +1,4 @@
 jwt:
-  secret: pS4hUj56UD0~@h@arFVMY{<T0JhzH[_=
-  access-token-expiry-ms: 7200000
-  refresh-token-expiry-ms: 604800000
+  secret: ${JWT_SECRET:cFM0aFVqNTZVRDB+QGhAYXJGVk1ZezxUMEpoekhbXz0=}
+  access-token-expiry-ms: ${JWT_ACCESS_TOKEN_EXPIRY_MS:7200000}
+  refresh-token-expiry-ms: ${JWT_REFRESH_TOKEN_EXPIRY_MS:604800000}

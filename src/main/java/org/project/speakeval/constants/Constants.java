@@ -1,0 +1,24 @@
+package org.project.speakeval.constants;
+
+public class Constants {
+
+    private Constants() {
+        throw new IllegalStateException("No Instance!");
+    }
+
+    public static final String TRACE_ID_NAME = "trace_id";
+
+    public static final class HttpResponseConstants {
+        public static final String STATUS = "status";
+        public static final String MESSAGE = "message";
+        public static final String PATH = "path";
+        public static final String ERROR = "error";
+        public static final String ERRORS = "errors";
+        public static final String KEY = "key";
+        public static final String TIMESTAMP = "timestamp";
+
+        private HttpResponseConstants() {
+            throw new IllegalStateException("No Instance!");
+        }
+    }
+}

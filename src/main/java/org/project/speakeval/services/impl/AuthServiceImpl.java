@@ -1,13 +1,16 @@
 package org.project.speakeval.services.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.project.speakeval.domain.User;
-import org.project.speakeval.dto.request.AuthRequest;
-import org.project.speakeval.dto.request.RegisterRequest;
-import org.project.speakeval.dto.request.TokenRefreshRequest;
-import org.project.speakeval.dto.response.AuthResponse;
-import org.project.speakeval.dto.response.RefreshResponse;
+import org.project.speakeval.dto.request.auth.AuthRequest;
+import org.project.speakeval.dto.request.auth.RegisterRequest;
+import org.project.speakeval.dto.request.auth.TokenRefreshRequest;
+import org.project.speakeval.dto.response.auth.AuthResponse;
+import org.project.speakeval.dto.response.auth.RefreshTokenResponse;
+import org.project.speakeval.dto.response.auth.RegisterResponse;
 import org.project.speakeval.enums.Role;
+import org.project.speakeval.mapper.UserMapper;
 import org.project.speakeval.repository.UserRepository;
 import org.project.speakeval.security.JwtTokenProvider;
 import org.project.speakeval.services.AuthService;
@@ -24,7 +27,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -36,10 +38,11 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsService userDetailsService;
+    private final UserMapper userMapper;
 
     @Override
     @Transactional
-    public User registerUser(RegisterRequest request) {
+    public RegisterResponse registerUser(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new IllegalArgumentException("Email already in use");
         }
@@ -50,13 +53,13 @@ public class AuthServiceImpl implements AuthService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.ROLE_STUDENT)
                 .build();
-        return userRepository.save(user);
+        return userMapper.toRegisterResponse(userRepository.save(user));
     }
 
     @Transactional
-    public User updateUser(UUID userId, String newEmail, Role newRole) {
+    public User updateUser(String userId, String newEmail, Role newRole) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException(
+                .orElseThrow(() -> new EntityNotFoundException(
                         "User not found with id: " + userId));
         if (newEmail != null && !newEmail.isBlank()) {
             user.setEmail(newEmail);
@@ -117,7 +120,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public RefreshResponse refreshToken(TokenRefreshRequest request) {
+    public RefreshTokenResponse refreshToken(TokenRefreshRequest request) {
         String refreshToken = request.getRefreshToken();
 
         if (!jwtProvider.validateToken(refreshToken)) {
@@ -139,6 +142,6 @@ public class AuthServiceImpl implements AuthService {
 
         String newAccessToken = jwtProvider.createAccessToken(email, roles);
 
-        return new RefreshResponse(newAccessToken);
+        return new RefreshTokenResponse(newAccessToken);
     }
 }

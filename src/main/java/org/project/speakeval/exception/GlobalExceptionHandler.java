@@ -1,8 +1,10 @@
 package org.project.speakeval.exception;
 
 import lombok.extern.slf4j.Slf4j;
-import org.project.speakeval.exception.response.ErrorResponse;
-import org.project.speakeval.exception.response.ValidationErrorResponse;
+import org.project.speakeval.constants.Constants;
+import org.project.speakeval.exception.utils.ExceptionCodes;
+import org.springframework.boot.web.error.ErrorAttributeOptions;
+import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -12,85 +14,83 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler extends DefaultErrorAttributes {
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ErrorResponse> handleIllegalArgument(IllegalArgumentException exception,
-                                                               WebRequest request) {
-        ErrorResponse error = new ErrorResponse(
-                LocalDateTime.now(),
-                HttpStatus.BAD_REQUEST.value(),
-                HttpStatus.BAD_REQUEST.getReasonPhrase(),
-                exception.getMessage(),
-                request.getContextPath()
-        );
-        return ResponseEntity.badRequest().body(error);
+    public ResponseEntity<Map<String, Object>> handleIllegalArgument(IllegalArgumentException exception,
+                                                                     WebRequest request) {
+        String message = exception.getMessage();
+        log.error("Illegal argument {}", message, exception);
+        return ofType(request, HttpStatus.BAD_REQUEST, message,
+                ExceptionCodes.ILLEGAL_ARGUMENT_EXCEPTION.getExceptionKey());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ValidationErrorResponse> handleValidation(MethodArgumentNotValidException exception,
-                                                                    WebRequest request) {
+    public ResponseEntity<Map<String, Object>> handleValidation(MethodArgumentNotValidException exception,
+                                                                WebRequest request) {
         Map<String, String> fieldErrors = new HashMap<>();
         for (FieldError fe : exception.getBindingResult().getFieldErrors()) {
             fieldErrors.put(fe.getField(), fe.getDefaultMessage());
         }
-        ValidationErrorResponse error = new ValidationErrorResponse(
-                LocalDateTime.now(),
-                HttpStatus.BAD_REQUEST.value(),
-                HttpStatus.BAD_REQUEST.getReasonPhrase(),
-                "Validation failed",
-                request.getContextPath(),
-                fieldErrors
-        );
-        return ResponseEntity.badRequest().body(error);
+        return ofType(request,
+                HttpStatus.BAD_REQUEST,
+                ExceptionCodes.ARGUMENT_VALIDATION_EXCEPTION.getExceptionMessage(),
+                ExceptionCodes.ARGUMENT_VALIDATION_EXCEPTION.getExceptionKey(),
+                fieldErrors);
     }
 
     @ExceptionHandler({UsernameNotFoundException.class, BadCredentialsException.class})
-    public ResponseEntity<ErrorResponse> handleAuthErrors(Exception exception,
-                                                          WebRequest request) {
-        ErrorResponse error = new ErrorResponse(
-                LocalDateTime.now(),
-                HttpStatus.UNAUTHORIZED.value(),
-                HttpStatus.UNAUTHORIZED.getReasonPhrase(),
-                exception.getMessage(),
-                request.getContextPath()
-        );
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+    public ResponseEntity<Map<String, Object>> handleAuthErrors(Exception exception,
+                                                                WebRequest request) {
+        String message = exception.getMessage();
+        log.error("Unauthorized action attempt {}", message, exception);
+        return ofType(request, HttpStatus.UNAUTHORIZED, message,
+                ExceptionCodes.ENTITY_NOT_FOUND_EXCEPTION.getExceptionKey());
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<ErrorResponse> handleAccessDenied(AccessDeniedException exception,
-                                                            WebRequest request) {
-        ErrorResponse error = new ErrorResponse(
-                LocalDateTime.now(),
-                HttpStatus.FORBIDDEN.value(),
-                HttpStatus.FORBIDDEN.getReasonPhrase(),
-                exception.getMessage(),
-                request.getContextPath()
-        );
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
+    public ResponseEntity<Map<String, Object>> handleAccessDenied(AccessDeniedException exception,
+                                                                  WebRequest request) {
+        String message = exception.getMessage();
+        log.error("Access denied {}", message, exception);
+        return ofType(request, HttpStatus.FORBIDDEN, message,
+                ExceptionCodes.ACCESS_DENIED_EXCEPTION.getExceptionKey());
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleAll(Exception exception,
-                                                   WebRequest request) {
-        ErrorResponse error = new ErrorResponse(
-                LocalDateTime.now(),
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
-                "An unexpected error occurred",
-                request.getContextPath()
-        );
-        log.error("Stack trace of exception : ");
-        exception.printStackTrace();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+    public ResponseEntity<Map<String, Object>> handleAll(Exception exception,
+                                                         WebRequest request) {
+        String message = exception.getMessage();
+        log.error("Unknown exception {}", message, exception);
+        return ofType(request, HttpStatus.INTERNAL_SERVER_ERROR, message,
+                ExceptionCodes.UNKNOWN_EXCEPTION.getExceptionKey());
+    }
+
+    protected ResponseEntity<Map<String, Object>> ofType(WebRequest request, HttpStatus status, String message,
+                                                         String exceptionKey) {
+        return ofType(request, status, message, exceptionKey, Collections.emptyMap());
+    }
+
+    private ResponseEntity<Map<String, Object>> ofType(WebRequest request, HttpStatus status, String message,
+                                                       String exceptionKey, Map<String, String> validationErrors) {
+        Map<String, Object> attributes = getErrorAttributes(request, ErrorAttributeOptions.defaults());
+        attributes.put(Constants.HttpResponseConstants.STATUS, status.value());
+        attributes.put(Constants.HttpResponseConstants.ERROR, status.getReasonPhrase());
+        attributes.put(Constants.HttpResponseConstants.MESSAGE, message);
+        attributes.put(Constants.HttpResponseConstants.ERRORS, validationErrors);
+        attributes.put(Constants.HttpResponseConstants.KEY, exceptionKey);
+        attributes.put(Constants.HttpResponseConstants.PATH, ((ServletWebRequest) request).getRequest().getRequestURI());
+        attributes.put(Constants.HttpResponseConstants.TIMESTAMP, LocalDateTime.now());
+        return new ResponseEntity<>(attributes, status);
     }
 }
