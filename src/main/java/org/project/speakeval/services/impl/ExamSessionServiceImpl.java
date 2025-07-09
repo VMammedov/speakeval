@@ -1,5 +1,6 @@
 package org.project.speakeval.services.impl;
 
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.project.speakeval.domain.Exam;
 import org.project.speakeval.domain.ExamSession;
@@ -11,8 +12,6 @@ import org.project.speakeval.repository.ExamSessionRepository;
 import org.project.speakeval.services.ExamService;
 import org.project.speakeval.services.ExamSessionService;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -30,11 +29,8 @@ public class ExamSessionServiceImpl implements ExamSessionService {
                 .status(SessionStatus.IN_PROGRESS)
                 .user(user)
                 .build();
-        
-        /* TODO Return exam and it's questions
-            Exam object (questions, time for every question (think and answer time by default 1 min))
-         */
 
         return examSessionMapper.toCreateExamSessionResponse(examSessionRepository.save(examSession));
     }
+
 }

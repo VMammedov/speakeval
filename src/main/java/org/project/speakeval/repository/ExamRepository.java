@@ -10,4 +10,5 @@ public interface ExamRepository extends JpaRepository<Exam, String> {
 
     @Query(value = "SELECT * FROM exams ORDER BY RANDOM() LIMIT 1", nativeQuery = true)
     Optional<Exam> findRandomExam();
+    
 }

@@ -29,6 +29,7 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "users")
 public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -58,4 +59,5 @@ public class User implements UserDetails {
     public String getUsername() {
         return email;
     }
+
 }

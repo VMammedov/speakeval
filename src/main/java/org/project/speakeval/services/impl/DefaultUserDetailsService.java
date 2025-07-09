@@ -19,4 +19,5 @@ public class DefaultUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException(
                         "User not found with email: " + email));
     }
+
 }

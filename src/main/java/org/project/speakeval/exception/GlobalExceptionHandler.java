@@ -93,4 +93,5 @@ public class GlobalExceptionHandler extends DefaultErrorAttributes {
         attributes.put(Constants.HttpResponseConstants.TIMESTAMP, LocalDateTime.now());
         return new ResponseEntity<>(attributes, status);
     }
+
 }

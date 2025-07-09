@@ -25,6 +25,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Table(name = "session_questions")
 public class SessionQuestion {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -47,4 +48,5 @@ public class SessionQuestion {
     private AudioFile audioFile;
 
     private String selectedOptionLabel;
+
 }

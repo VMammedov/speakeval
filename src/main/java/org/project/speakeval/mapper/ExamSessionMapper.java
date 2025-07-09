@@ -9,7 +9,7 @@ import org.project.speakeval.dto.response.exam_session.CreateExamSessionResponse
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface ExamSessionMapper {
 
-    @Mapping(source = "user.id", target = "userId")
-    @Mapping(source = "id", target = "examSessionId")
+    @Mapping(target = "userId", source = "user.id")
     CreateExamSessionResponse toCreateExamSessionResponse(ExamSession examSession);
+
 }
