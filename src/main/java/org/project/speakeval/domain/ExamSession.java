@@ -5,6 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -17,6 +18,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
 import org.project.speakeval.enums.SessionStatus;
 
 import java.time.LocalDateTime;
@@ -31,6 +33,7 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "exam_sessions")
 public class ExamSession {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -59,4 +62,5 @@ public class ExamSession {
     @Builder.Default
     @OneToMany(mappedBy = "examSession", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SessionQuestion> sessionQuestions = new ArrayList<>();
+
 }

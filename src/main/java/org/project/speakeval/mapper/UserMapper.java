@@ -7,5 +7,7 @@ import org.project.speakeval.dto.response.auth.RegisterResponse;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface UserMapper {
+
     RegisterResponse toRegisterResponse(User user);
+
 }

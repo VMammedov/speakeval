@@ -1,4 +1,4 @@
-package org.project.speakeval.controller;
+package org.project.speakeval.controller.exam;
 
 import lombok.RequiredArgsConstructor;
 import org.project.speakeval.domain.User;

@@ -6,6 +6,7 @@ import org.project.speakeval.dto.response.exam_session.CreateExamSessionResponse
 import org.project.speakeval.dto.response.exam_session.UpdateExamSessionResponse;
 
 public interface ExamSessionService {
+
     CreateExamSessionResponse createExamSession(User user);
     UpdateExamSessionResponse updateExamSession(UpdateExamSessionRequest request, String examSessionId, User user);
 }

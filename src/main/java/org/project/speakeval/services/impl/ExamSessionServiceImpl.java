@@ -2,6 +2,10 @@ package org.project.speakeval.services.impl;
 
 import com.azure.storage.blob.BlobClient;
 import jakarta.persistence.EntityNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.project.speakeval.domain.AudioFile;
 import org.project.speakeval.domain.Exam;
@@ -24,11 +28,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UncheckedIOException;
-import java.time.LocalDateTime;
-
 @Service
 @RequiredArgsConstructor
 public class ExamSessionServiceImpl implements ExamSessionService {
@@ -48,17 +47,14 @@ public class ExamSessionServiceImpl implements ExamSessionService {
                 .status(SessionStatus.IN_PROGRESS)
                 .user(user)
                 .build();
-        
-        /* TODO Return exam and it's questions
-            Exam object (questions, time for every question (think and answer time by default 1 min))
-         */
 
         return examSessionMapper.toCreateExamSessionResponse(examSessionRepository.save(examSession));
     }
 
     @Override
     @Transactional
-    public UpdateExamSessionResponse updateExamSession(UpdateExamSessionRequest request, String examSessionId, User user) {
+    public UpdateExamSessionResponse updateExamSession(UpdateExamSessionRequest request, String examSessionId,
+                                                       User user) {
         ExamSession examSession = examSessionRepository.findById(examSessionId)
                 .orElseThrow(() -> new EntityNotFoundException("There is no exam by this Id."));
 
@@ -76,7 +72,7 @@ public class ExamSessionServiceImpl implements ExamSessionService {
                 blobClient.upload(in, file.getSize(), true);
             } catch (IOException e) {
                 throw new UncheckedIOException("Failed to upload audio for question " +
-                        dto.getQuestionId(), e);
+                                               dto.getQuestionId(), e);
             }
             String url = blobClient.getBlobUrl();
 
@@ -107,4 +103,5 @@ public class ExamSessionServiceImpl implements ExamSessionService {
 
         return new UpdateExamSessionResponse();
     }
+
 }

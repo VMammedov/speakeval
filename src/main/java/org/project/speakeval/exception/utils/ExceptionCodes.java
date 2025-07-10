@@ -32,4 +32,5 @@ public enum ExceptionCodes implements ExceptionKeyAndMessage {
         this.exceptionKey = exceptionKey;
         return this;
     }
+
 }

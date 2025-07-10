@@ -1,4 +1,4 @@
-package org.project.speakeval.controller;
+package org.project.speakeval.controller.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.project.speakeval.dto.request.auth.AuthRequest;
@@ -40,4 +40,5 @@ public class AuthController {
     public ResponseEntity<RefreshTokenResponse> refresh(@RequestBody TokenRefreshRequest request) {
         return ResponseEntity.ok(authService.refreshToken(request));
     }
+
 }
