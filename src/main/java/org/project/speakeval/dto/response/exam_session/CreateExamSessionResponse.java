@@ -17,7 +17,6 @@ public class CreateExamSessionResponse {
     String userId;
     ExamDto exam;
     LocalDateTime startedAt;
-    LocalDateTime endedAt;
     SessionStatus status;
     Integer currentQuestionIndex;
 

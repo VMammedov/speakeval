@@ -14,7 +14,6 @@ public class ExamDto {
     String id;
     String title;
     String description;
-    Integer passScore;
     List<QuestionDto> questions;
 
 }
