@@ -1,0 +1,7 @@
+azure:
+  storage:
+    connection-string: ${AZURE_STORAGE_KEY}
+    containers:
+      audio-answers: "audio-answers"
+      question-assets: "question-assets"
+      user-profiles: "user-profiles"
