@@ -3,6 +3,8 @@ package org.project.speakeval.config;
 import lombok.RequiredArgsConstructor;
 import org.project.speakeval.filters.JwtAuthenticationFilter;
 import org.project.speakeval.security.JwtTokenProvider;
+import org.springframework.boot.actuate.autoconfigure.security.reactive.EndpointRequest;
+import org.springframework.boot.actuate.health.HealthEndpoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,6 +27,16 @@ public class SecurityConfig {
 
     private final JwtTokenProvider tokenProvider;
     private final UserDetailsService userDetailsService;
+
+    private static final String[] WHITE_LIST_URL = {
+            "/auth/**",
+            "/swagger-ui/**",
+            "/v3/api-docs",
+            "/v3/api-docs/**",
+            "/swagger-resources/**",
+            "/webjars/**",
+            "/actuator/**"
+    };
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -50,6 +62,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers(WHITE_LIST_URL).permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(
