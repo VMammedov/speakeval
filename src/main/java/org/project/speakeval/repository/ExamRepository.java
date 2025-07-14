@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface ExamRepository extends JpaRepository<Exam, String> {
 
-    @Query(value = "SELECT * FROM exams ORDER BY RANDOM() LIMIT 1", nativeQuery = true)
-    Optional<Exam> findRandomExam();
+    @Query(value = "SELECT e FROM Exam e JOIN FETCH Question q ORDER BY FUNCTION('RANDOM') LIMIT 1")
+    Optional<Exam> findRandomExamWithQuestions();
     
 }

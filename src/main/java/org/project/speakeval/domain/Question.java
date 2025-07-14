@@ -54,6 +54,9 @@ public class Question {
 
     private String promptResourceUrl;
 
+    @Column(nullable = true) // TODO CHANGE
+    private Integer sequence;
+
     @Builder.Default
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<QuestionOption> options = new ArrayList<>(); // Not for now, it will be used select based (A,B,C,D) exams

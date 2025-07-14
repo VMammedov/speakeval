@@ -1,4 +1,4 @@
-package org.project.speakeval.controller.auth;
+package org.project.speakeval.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.project.speakeval.dto.request.auth.AuthRequest;

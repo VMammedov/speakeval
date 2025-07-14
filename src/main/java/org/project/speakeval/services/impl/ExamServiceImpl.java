@@ -14,7 +14,7 @@ public class ExamServiceImpl implements ExamService {
     private final ExamRepository examRepository;
 
     public Exam getRandomExam() {
-        return examRepository.findRandomExam()
+        return examRepository.findRandomExamWithQuestions()
                 .orElseThrow(() -> new EntityNotFoundException("There is no exam at this time"));
     }
 

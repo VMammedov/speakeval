@@ -67,6 +67,15 @@ public class GlobalExceptionHandler extends DefaultErrorAttributes {
                 ExceptionCodes.ACCESS_DENIED_EXCEPTION.getExceptionKey());
     }
 
+    @ExceptionHandler(MissingFileException.class)
+    public ResponseEntity<Map<String, Object>> handleMissingFile(MissingFileException exception,
+                                                                 WebRequest request) {
+        String message = exception.getMessage();
+        log.error("The requested file is missed {}", message, exception);
+        return ofType(request, HttpStatus.BAD_REQUEST, message,
+                ExceptionCodes.FILE_IS_MISSED.getExceptionKey());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleAll(Exception exception,
                                                          WebRequest request) {

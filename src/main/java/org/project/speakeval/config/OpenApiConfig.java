@@ -10,13 +10,24 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class OpenApiConfig {
-    @Bean
-    public OpenAPI configureOpenAPI() {
 
+    @Bean
+    public OpenAPI openAPI() {
         return new OpenAPI()
-                .info(new Info().title("SpeakEval API Documentation"))
-                .addSecurityItem(new SecurityRequirement().addList("JavaInUseSecurityScheme"))
-                .components(new Components().addSecuritySchemes("JavaInUseSecurityScheme", new SecurityScheme()
-                        .name("JavaInUseSecurityScheme").type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")));
+                .info(new Info()
+                        .title("API Documentation")
+                        .version("1.0")
+                        .description("API Documentation - SpeakEval platform"))
+                .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
+                .components(new Components()
+                        .addSecuritySchemes("bearerAuth",
+                                new SecurityScheme()
+                                        .name("Authorization")
+                                        .type(SecurityScheme.Type.HTTP)
+                                        .scheme("bearer")
+                                        .bearerFormat("JWT")
+                                        .description("Enter Access token")
+                        )
+                );
     }
 }
