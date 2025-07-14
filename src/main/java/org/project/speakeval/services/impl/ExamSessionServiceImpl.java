@@ -23,6 +23,7 @@ import org.project.speakeval.dto.SessionQuestionDto;
 import org.project.speakeval.dto.request.exam_session.UpdateExamSessionRequest;
 import org.project.speakeval.dto.response.exam_session.CreateExamSessionResponse;
 import org.project.speakeval.dto.response.exam_session.UpdateExamSessionResponse;
+import org.project.speakeval.enums.OperationResult;
 import org.project.speakeval.enums.SessionStatus;
 import org.project.speakeval.exception.MissingFileException;
 import org.project.speakeval.mapper.ExamSessionMapper;
@@ -135,7 +136,7 @@ public class ExamSessionServiceImpl implements ExamSessionService {
         examSession.setStatus(SessionStatus.COMPLETED);
         examSessionRepository.save(examSession);
 
-        return new UpdateExamSessionResponse();
+        return new UpdateExamSessionResponse(OperationResult.SUCCESS);
     }
 
 }

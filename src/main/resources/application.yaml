@@ -2,7 +2,10 @@ spring:
   profiles:
     include:
       - db
+      - app
       - security
+      - azure
+      - actuator
 #server:
 #  servlet:
 #    context-path: "/api"

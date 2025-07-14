@@ -29,7 +29,7 @@ public class ExamSessionController {
         return examSessionService.createExamSession(user);
     }
 
-    @PostMapping(value = "/{examSessionId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/{examSessionId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public UpdateExamSessionResponse updateExamSession(@AuthenticationPrincipal User user,
                                                        @PathVariable String examSessionId,
                                                        @RequestPart("metadata") UpdateExamSessionRequest request,
