@@ -54,7 +54,7 @@ public class Question {
 
     private String promptResourceUrl;
 
-    @Column(nullable = true) // TODO CHANGE
+    @Column(nullable = false)
     private Integer sequence;
 
     @Builder.Default

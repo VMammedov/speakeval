@@ -13,6 +13,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
+import org.project.speakeval.constants.Constants;
 import org.project.speakeval.domain.AudioFile;
 import org.project.speakeval.domain.Exam;
 import org.project.speakeval.domain.ExamSession;
@@ -27,7 +28,9 @@ import org.project.speakeval.enums.OperationResult;
 import org.project.speakeval.enums.SessionStatus;
 import org.project.speakeval.exception.MissingFileException;
 import org.project.speakeval.mapper.ExamSessionMapper;
+import org.project.speakeval.repository.ExamRepository;
 import org.project.speakeval.repository.ExamSessionRepository;
+import org.project.speakeval.services.BlobStorageService;
 import org.project.speakeval.services.ExamService;
 import org.project.speakeval.services.ExamSessionService;
 import org.project.speakeval.services.QuestionService;
@@ -39,31 +42,19 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
+@RequiredArgsConstructor
 public class ExamSessionServiceImpl implements ExamSessionService {
 
-    private final ExamService examService;
     private final ExamSessionRepository examSessionRepository;
+    private final ExamRepository examRepository;
     private final ExamSessionMapper examSessionMapper;
-    private final BlobContainerClient audioAnswersBlobContainerClient;
+    private final BlobStorageService blobStorageService;
     private final QuestionService questionService;
     private final SessionQuestionService sessionQuestionService;
 
-    public ExamSessionServiceImpl(ExamService examService,
-                                  ExamSessionRepository examSessionRepository,
-                                  ExamSessionMapper examSessionMapper,
-                                  @Qualifier(value = "audioAnswersBlobContainerClient") BlobContainerClient audioAnswersBlobContainerClient,
-                                  QuestionService questionService,
-                                  SessionQuestionService sessionQuestionService) {
-        this.examService = examService;
-        this.examSessionRepository = examSessionRepository;
-        this.examSessionMapper = examSessionMapper;
-        this.audioAnswersBlobContainerClient = audioAnswersBlobContainerClient;
-        this.questionService = questionService;
-        this.sessionQuestionService = sessionQuestionService;
-    }
-
     public CreateExamSessionResponse createExamSession(User user) {
-        Exam exam = examService.getRandomExam();
+        Exam exam = examRepository.findRandomExamWithQuestions()
+                .orElseThrow(() -> new EntityNotFoundException("There is no exam at this time"));
         ExamSession examSession = ExamSession.builder()
                 .exam(exam)
                 .startedAt(LocalDateTime.now())
@@ -90,26 +81,18 @@ public class ExamSessionServiceImpl implements ExamSessionService {
 
         for (SessionQuestionDto dto : request.getSessionQuestions()) {
             MultipartFile file = fileMap.get(dto.getQuestionId());
-            if (file == null) {
-                throw new MissingFileException("Missing file for question " + dto.getQuestionId());
-            }
 
-            String blobName = String.format("sessions/%s/q-%s-%03d.%s",
+            String blobName = String.format(Constants.BlobNamingFormat.SESSION_AUDIO_ANSWER_FORMAT,
                     examSession.getId(),
                     dto.getQuestionId(),
                     dto.getSequence(),
                     dto.getFormat());
 
-            BlobClient blobClient = audioAnswersBlobContainerClient.getBlobClient(blobName);
-
-            try (InputStream in = file.getInputStream()) {
-                blobClient.upload(in, file.getSize(), true);
-            } catch (IOException e) {
-                throw new UncheckedIOException("Failed to upload audio for question " +
-                        dto.getQuestionId(), e);
-            }
-
-            String url = blobClient.getBlobUrl();
+            String url = blobStorageService.upload(
+                    dto.getFile(),
+                    blobName,
+                    Constants.RelatedEntityType.QUESTION,
+                    dto.getQuestionId());
 
             AudioFile audio = AudioFile.builder()
                     .storageUrl(url)

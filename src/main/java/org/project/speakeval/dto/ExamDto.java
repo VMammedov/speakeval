@@ -1,4 +1,4 @@
-package org.project.speakeval.dto.response;
+package org.project.speakeval.dto;
 
 import java.util.List;
 import lombok.AccessLevel;
