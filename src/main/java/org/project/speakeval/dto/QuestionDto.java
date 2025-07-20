@@ -17,5 +17,6 @@ public class QuestionDto {
     Integer answerDurationSeconds;
     String promptText;
     String promptResourceUrl;
+    Integer sequence;
 
 }

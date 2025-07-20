@@ -18,6 +18,5 @@ public class CreateExamSessionResponse {
     ExamDto exam;
     LocalDateTime startedAt;
     SessionStatus status;
-    Integer currentQuestionIndex;
 
 }
