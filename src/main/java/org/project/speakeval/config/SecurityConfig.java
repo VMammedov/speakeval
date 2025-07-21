@@ -3,8 +3,6 @@ package org.project.speakeval.config;
 import lombok.RequiredArgsConstructor;
 import org.project.speakeval.filters.JwtAuthenticationFilter;
 import org.project.speakeval.security.JwtTokenProvider;
-import org.springframework.boot.actuate.autoconfigure.security.reactive.EndpointRequest;
-import org.springframework.boot.actuate.health.HealthEndpoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -67,7 +65,7 @@ public class SecurityConfig {
         config.setAllowedOriginPatterns(List.of("*"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         config.setAllowedHeaders(List.of("*"));
-        config.setAllowCredentials(true);
+        config.setAllowCredentials(false);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
