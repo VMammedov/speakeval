@@ -4,7 +4,7 @@ import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 import org.project.speakeval.domain.Question;
-import org.project.speakeval.dto.CreateQuestionDto;
+import org.project.speakeval.dto.client.CreateQuestionDto;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface QuestionMapper {

@@ -7,10 +7,10 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.project.speakeval.domain.Exam;
-import org.project.speakeval.dto.request.exam.CreateExamRequest;
-import org.project.speakeval.dto.request.exam.UpdateExamRequest;
-import org.project.speakeval.dto.response.exam.ExamResponse;
-import org.project.speakeval.dto.response.exam.ExamSummaryResponse;
+import org.project.speakeval.dto.client.request.exam.CreateExamRequest;
+import org.project.speakeval.dto.client.request.exam.UpdateExamRequest;
+import org.project.speakeval.dto.client.response.exam.ExamResponse;
+import org.project.speakeval.dto.client.response.exam.ExamSummaryResponse;
 
 import java.util.List;
 

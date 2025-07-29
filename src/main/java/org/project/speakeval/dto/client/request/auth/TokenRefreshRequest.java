@@ -1,19 +1,18 @@
-package org.project.speakeval.dto.request.auth;
+package org.project.speakeval.dto.client.request.auth;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class TokenRefreshRequest {
     @NotBlank(message = "Refresh token is required")
-    String refreshToken;
+    private String refreshToken;
 }

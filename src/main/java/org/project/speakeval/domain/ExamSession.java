@@ -38,11 +38,11 @@ public class ExamSession {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false,  fetch = FetchType.LAZY)
     @JoinColumn(name = "exam_id")
     private Exam exam;
 
@@ -60,7 +60,7 @@ public class ExamSession {
     private Integer totalScore;
 
     @Builder.Default
-    @OneToMany(mappedBy = "examSession", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "examSession", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<SessionQuestion> sessionQuestions = new ArrayList<>();
 
 }

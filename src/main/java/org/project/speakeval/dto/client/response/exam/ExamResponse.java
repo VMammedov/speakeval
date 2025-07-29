@@ -1,4 +1,4 @@
-package org.project.speakeval.dto.response.exam;
+package org.project.speakeval.dto.client.response.exam;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,12 +13,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class ExamSummaryResponse {
+public class ExamResponse {
 
     @EqualsAndHashCode.Include
     private String id;
     private String title;
+    private String description;
     private Integer passScore;
     private Integer questionCount;
 }
-

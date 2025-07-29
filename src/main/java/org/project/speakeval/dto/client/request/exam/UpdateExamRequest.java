@@ -1,27 +1,21 @@
-package org.project.speakeval.dto.request.exam;
+package org.project.speakeval.dto.client.request.exam;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Positive;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import org.project.speakeval.dto.CreateQuestionDto;
-
-import java.util.List;
+import lombok.Setter;
 
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateExamRequest {
-    @NotBlank(message = "Title is required")
+public class UpdateExamRequest {
+
     @Size(min = 3, max = 100, message = "Title must be between 3 and 100 characters")
     private String title;
 
@@ -31,6 +25,4 @@ public class CreateExamRequest {
     @Min(value = 0, message = "Pass score must be non-negative")
     @Max(value = 100, message = "Pass score cannot exceed 100")
     private Integer passScore;
-
-    private List<CreateQuestionDto>  questions;
 }

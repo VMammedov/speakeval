@@ -1,9 +1,9 @@
 package org.project.speakeval.services;
 
-import org.project.speakeval.dto.request.exam.CreateExamRequest;
-import org.project.speakeval.dto.request.exam.UpdateExamRequest;
-import org.project.speakeval.dto.response.exam.ExamResponse;
-import org.project.speakeval.dto.response.exam.ExamSummaryResponse;
+import org.project.speakeval.dto.client.request.exam.CreateExamRequest;
+import org.project.speakeval.dto.client.request.exam.UpdateExamRequest;
+import org.project.speakeval.dto.client.response.exam.ExamResponse;
+import org.project.speakeval.dto.client.response.exam.ExamSummaryResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

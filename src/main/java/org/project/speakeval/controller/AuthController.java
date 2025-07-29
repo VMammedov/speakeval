@@ -1,12 +1,12 @@
 package org.project.speakeval.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.project.speakeval.dto.request.auth.AuthRequest;
-import org.project.speakeval.dto.request.auth.RegisterRequest;
-import org.project.speakeval.dto.request.auth.TokenRefreshRequest;
-import org.project.speakeval.dto.response.auth.AuthResponse;
-import org.project.speakeval.dto.response.auth.RefreshTokenResponse;
-import org.project.speakeval.dto.response.auth.RegisterResponse;
+import org.project.speakeval.dto.client.request.auth.AuthRequest;
+import org.project.speakeval.dto.client.request.auth.RegisterRequest;
+import org.project.speakeval.dto.client.request.auth.TokenRefreshRequest;
+import org.project.speakeval.dto.client.response.auth.AuthResponse;
+import org.project.speakeval.dto.client.response.auth.RefreshTokenResponse;
+import org.project.speakeval.dto.client.response.auth.RegisterResponse;
 import org.project.speakeval.services.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
